@@ -7,8 +7,11 @@ char randomPlacement(randomMax){
 }
 
 
-void snakeInit(){
-
+void snakeInit(Snake *snake){
+       srand(analogRead(2)); 
+	snake->snakePostion[0].x = randomPlacement(X_AXIS_MAX);
+	snake->snakePostion[0].y = randomPlacement(Y_AXIS_MAX);
+	snake->currentSnakeLength = 1; 
 };
 
 

@@ -21,6 +21,7 @@ typedef enum {
     Snake_right
 }Movement; 
 
+void snakeInit(Snake *snake);
 Movement snakeDirection(int lastX, int lastY, int x, int y, Movement lastMove); 
 char randomPlacement(randomMax);
 #endif
