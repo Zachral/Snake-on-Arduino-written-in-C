@@ -9,7 +9,7 @@ typedef struct{
 
 
 typedef struct{
-    char currentSnakeLength = 1;
+    char currentSnakeLength;
     Position snakePostion[X_AXIS_MAX * Y_AXIS_MAX]; 
 }Snake; 
 
@@ -21,5 +21,6 @@ typedef enum {
     Snake_right
 }Movement; 
 
-Movement snakeDirection(int lastX, int lastY, int x, int y, movement lastMove); 
+Movement snakeDirection(int lastX, int lastY, int x, int y, Movement lastMove); 
+char randomPlacement(randomMax);
 #endif

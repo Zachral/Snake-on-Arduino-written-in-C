@@ -6,6 +6,7 @@
 #include <util/delay.h>
 #include <time.h>
 #include <stdlib.h>
+#include <avr/iom169.h>  
 #include "uart.h"
 #include "randomPlacement.h"
 #include "snake.h"
@@ -21,21 +22,24 @@
 
 #define BUTTON_IS_CLICKED(PINB,BUTTON_PIN) !BIT_CHECK(PINB,BUTTON_PIN)
 
+void hardwareInit(){
+	BIT_CLEAR(DDRC,VERT_PIN);
+	BIT_CLEAR(DDRC,HORZ_PIN);
+
+	//Sätt till INPUT_PULLUP
+    BIT_CLEAR(DDRD,SEL_PIN); // INPUT MODE
+    BIT_SET(PORTD,SEL_PIN); 
+
+	init_serial();
+	max7219_init();
+}
 
 //// https://wokwi.com/projects/296234816685212169
 
 
 int main()
 {
-	BIT_CLEAR(DDRC,VERT_PIN);
-	BIT_CLEAR(DDRC,HORZ_PIN);
-
-	  //Sätt till INPUT_PULLUP
-    BIT_CLEAR(DDRD,SEL_PIN); // INPUT MODE
-    BIT_SET(PORTD,SEL_PIN); 
-
-	init_serial();
-	max7219_init();
+	hardwareInit(); 	
 	srand(analogRead(SEL_PIN)); 
 	int snakeX = randomPlacement(X_AXIS_MAX);
 	int snakeY = randomPlacement(Y_AXIS_MAX);

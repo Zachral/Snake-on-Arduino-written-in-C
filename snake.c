@@ -1,6 +1,15 @@
 #include "snake.h"
+#include <time.h>
+#include <stdlib.h>
+
+char randomPlacement(randomMax){
+    return (rand() % randomMax);
+}
 
 
+void snakeInit(){
+
+};
 
 
 Movement snakeDirection(int lastX, int lastY, int snakeX, int snakeY, Movement lastMove){
