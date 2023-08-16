@@ -13,5 +13,6 @@ void generateFood(Food *food, Snake snake){
 		food->foodY = randomPlacement(Y_AXIS_MAX);
 	}
     max7219b_set(food->foodX, food->foodY); 
+    max7219b_out();
     return; 
 }

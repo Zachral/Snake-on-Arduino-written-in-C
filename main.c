@@ -58,16 +58,23 @@ int main()
 		// else if(lastMove == Snake_Up) max7219b_clr(lastX, lastY+currentSnakeLenght+1);
 		// else if(lastMove == Snake_right) max7219b_clr(lastX-currentSnakeLenght-1, lastY);
 		// else if(lastMove == Snake_left) max7219b_clr(lastX+currentSnakeLenght+1, lastY);
-
-		int horz = analogRead(HORZ_PIN);
-  		int vert = analogRead(VERT_PIN);
-		snake.snakePostion[0].x = joystickXAxis(horz, snake.snakePostion[0].x); 
-		snake.snakePostion[0].y = joystickYAxis(vert, snake.snakePostion[0].y); 
+		
+	
+		int horizontal = analogRead(HORZ_PIN);
+  		int vertical = analogRead(VERT_PIN);
+		snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
+		snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
 
 
 	 	//plots the snake on led-matrix
-		max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y);
-		max7219b_out();
+		 for(char i = 0; i < snake.currentSnakeLength; i++){
+              snake.snakePostion[i+1].x = snake.snakePostion[i].x;
+              snake.snakePostion[i+1].y = snake.snakePostion[i].y; 
+			  max7219b_set(snake.snakePostion[i].x, snake.snakePostion[i].y);
+			  max7219b_out();
+       }
+		clearSnakeTail(snake); 
+		
 		_delay_ms(100);
 		//lastMove = snakeDirection(lastX, lastY, snake.snakePostion[0].x, snake.snakePostion[0].y, lastMove);
 		// if currentMove != lastMove
@@ -78,11 +85,9 @@ int main()
 		if(snake.snakePostion[0].x == food.foodX && snake.snakePostion[0].y == food.foodY){
 			snakeGrow(&snake); 
 			generateFood(&food, snake); 
-			max7219b_out();
+		
 			
 		}
-		
-		
 		
 		//Snake moving constantly left. 
 		// for(int i = 0; i < 16;i++){
