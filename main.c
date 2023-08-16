@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "uart.h"
 #include "randomPlacement.h"
-#include "snakeMovement.h"
+#include "snake.h"
 
 #define VERT_PIN 0
 #define HORZ_PIN 1
@@ -46,7 +46,7 @@ int main()
 		foodY = randomPlacement(Y_AXIS_MAX);
 	}
 	int currentSnakeLenght = 0; 
-	movement lastMove; 
+	Movement lastMove; 
 
 
 	printf("x = %d\n", snakeX);
