@@ -1,4 +1,5 @@
 #include "snake.h"
+#include "max72xx.h"
 #include <time.h>
 #include <stdlib.h>
 
@@ -12,6 +13,9 @@ void snakeInit(Snake *snake){
 	snake->snakePostion[0].x = randomPlacement(X_AXIS_MAX);
 	snake->snakePostion[0].y = randomPlacement(Y_AXIS_MAX);
 	snake->currentSnakeLength = 1; 
+       Movement lastMove;
+       max7219b_set(snake->snakePostion[0].x, snake->snakePostion[0].y); 
+       return; 
 };
 
 

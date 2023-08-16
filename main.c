@@ -8,6 +8,7 @@
 #include <stdlib.h> 
 #include "uart.h"
 #include "snake.h"
+#include "food.h"
 
 #define VERT_PIN 0
 #define HORZ_PIN 1
@@ -40,19 +41,12 @@ int main()
 	hardwareInit(); 
 	Snake snake; 	
 	snakeInit(&snake); 
+	Food food; 
+	foodInit(&food); 
+	generateFood(&food, snake); 
 	Movement lastMove; 
-	
-	int foodX = randomPlacement(X_AXIS_MAX);
-	int foodY = randomPlacement(Y_AXIS_MAX);
-	while(snake.snakePostion[0].x == foodX && snake.snakePostion[0].y == foodY){
-		foodX = randomPlacement(X_AXIS_MAX);
-		foodY = randomPlacement(Y_AXIS_MAX);
-	}
-
 	printf("x = %d\n", snake.snakePostion[0].x);
 	printf("y = %d\n", snake.snakePostion[0].y); 
-	max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
-	max7219b_set(foodX, foodY); 
 	max7219b_out();
 
 
@@ -80,13 +74,9 @@ int main()
 			// initialize currentMove varible
 			// **Write logic for when snake moves direction**
 		// currentMove = lastMove; 	
-		printf("last move : %d\n", (int)lastMove);
-		if( snake.snakePostion[0].x == foodX && snake.snakePostion[0].y == foodY){
-			while (snake.snakePostion[0].x == foodX && snake.snakePostion[0].y == foodY){
-			foodX = randomPlacement(X_AXIS_MAX);
-			foodY = randomPlacement(Y_AXIS_MAX);
-			}
-			max7219b_set(foodX, foodY); 
+		//printf("last move : %d\n", (int)lastMove);
+		if( snake.snakePostion[0].x == food.foodX && snake.snakePostion[0].y == food.foodY){
+			generateFood(&food, snake); 
 			max7219b_out();
 			snake.currentSnakeLength++; 
 		}
