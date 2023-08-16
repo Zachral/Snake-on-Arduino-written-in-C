@@ -18,6 +18,11 @@ void snakeInit(Snake *snake){
        return; 
 };
 
+void snakeGrow(Snake *snake){
+       snake->currentSnakeLength++;
+       max7219b_set(snake->snakePostion[snake->currentSnakeLength-1].x, snake->snakePostion[snake->currentSnakeLength-1].y); 
+       return; 
+}
 
 Movement snakeDirection(int lastX, int lastY, int snakeX, int snakeY, Movement lastMove){
        if(snakeX > lastX) return Snake_right;
