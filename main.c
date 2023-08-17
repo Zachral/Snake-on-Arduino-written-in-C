@@ -31,6 +31,7 @@ void hardwareInit(){
 
 	init_serial();
 	max7219_init();
+	
 }
 
 //// https://wokwi.com/projects/296234816685212169
@@ -45,9 +46,9 @@ int main()
 	foodInit(&food); 
 	generateFood(&food, snake); 
 	Movement lastMove; 
-	printf("x = %d\n", snake.snakePostion[0].x);
-	printf("y = %d\n", snake.snakePostion[0].y); 
 	max7219b_out();
+	int horizontal;
+  	int vertical;
 
 
 	while (1) {
@@ -59,23 +60,32 @@ int main()
 		// else if(lastMove == Snake_right) max7219b_clr(lastX-currentSnakeLenght-1, lastY);
 		// else if(lastMove == Snake_left) max7219b_clr(lastX+currentSnakeLenght+1, lastY);
 		
+		horizontal = analogRead(HORZ_PIN);
+  		vertical = analogRead(VERT_PIN);
+		_delay_ms(100);
+
+		
+		
+		if(snake.currentSnakeLength > 1){
+			if ((snake.snakePostion[0].x != snake.snakePostion[1].x) || (snake.snakePostion[0].y != snake.snakePostion[1].y)){
+	 		//plots the snake on led-matrix
+				for(char i = snake.currentSnakeLength; i > 0; i--){
+              		snake.snakePostion[i].x = snake.snakePostion[i-1].x;
+              		snake.snakePostion[i].y = snake.snakePostion[i-1].y; 
+			  		max7219b_set(snake.snakePostion[i].x, snake.snakePostion[i].y);
+       			} 
+			}
+		}
 	
-		int horizontal = analogRead(HORZ_PIN);
-  		int vertical = analogRead(VERT_PIN);
 		snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
 		snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
-
-
-	 	//plots the snake on led-matrix
-		 for(char i = 0; i < snake.currentSnakeLength; i++){
-              snake.snakePostion[i+1].x = snake.snakePostion[i].x;
-              snake.snakePostion[i+1].y = snake.snakePostion[i].y; 
-			  max7219b_set(snake.snakePostion[i].x, snake.snakePostion[i].y);
-			  max7219b_out();
-       }
+		printf("x = %d\n", snake.snakePostion[0].x);
+		printf("y = %d\n", snake.snakePostion[0].y); 
+		max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
+	  	max7219b_out();
 		clearSnakeTail(snake); 
 		
-		_delay_ms(100);
+		
 		//lastMove = snakeDirection(lastX, lastY, snake.snakePostion[0].x, snake.snakePostion[0].y, lastMove);
 		// if currentMove != lastMove
 			// initialize currentMove varible
@@ -85,7 +95,7 @@ int main()
 		if(snake.snakePostion[0].x == food.foodX && snake.snakePostion[0].y == food.foodY){
 			snakeGrow(&snake); 
 			generateFood(&food, snake); 
-		
+			printf("Length = %d",snake.currentSnakeLength);
 			
 		}
 		
