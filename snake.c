@@ -3,13 +3,15 @@
 #include <time.h>
 #include <stdlib.h>
 
+#define RANDOMIZER_PIN  2
+
 char randomPlacement(randomMax){
     return (rand() % randomMax);
 }
 
 
 void snakeInit(Snake *snake){
-       srand(analogRead(2)); 
+       srand(analogRead(RANDOMIZER_PIN)); 
 	snake->snakePostion[0].x = randomPlacement(X_AXIS_MAX);
 	snake->snakePostion[0].y = randomPlacement(Y_AXIS_MAX);
 	snake->currentSnakeLength = 1; 
@@ -44,12 +46,12 @@ void clearSnakeTail(Snake snake){
        return; 
 } 
 
-Movement snakeDirection(int lastX, int lastY, int snakeX, int snakeY, Movement lastMove){
-       if(snakeX > lastX) return Snake_right;
-       else if(snakeX < lastX) return Snake_left; 
-       else if(snakeY > lastY) return Snake_down;
-       else if(snakeY < lastY) return Snake_Up; 
-       else return lastMove; 
-};
+unsigned int snakeHasMoved(int horizontal, int vertical){
+       if(horizontal > 700) return 1;
+       if(horizontal < 300) return 1; 
+       if(vertical > 700) return 1;
+       if(vertical < 300) return 1; 
+       return 0; 
+}
 
 

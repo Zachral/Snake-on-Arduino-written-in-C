@@ -46,6 +46,7 @@ int main()
 	foodInit(&food); 
 	generateFood(&food, snake); 
 	Movement lastMove; 
+	Movement currentMove; 
 	max7219b_out();
 	int horizontal;
   	int vertical;
@@ -62,29 +63,23 @@ int main()
 		
 		horizontal = analogRead(HORZ_PIN);
   		vertical = analogRead(VERT_PIN);
-		_delay_ms(100);
-
-		
-		
+		_delay_ms(75);
+		//Skriv om som funktion? dels en för for-loop och en för att kolla om snake flyttat, return 0?
 		if(snake.currentSnakeLength > 1){
-			if ((snake.snakePostion[0].x != snake.snakePostion[1].x) || (snake.snakePostion[0].y != snake.snakePostion[1].y)){
+			if(snakeHasMoved(horizontal, vertical)){
 	 		//plots the snake on led-matrix
-				for(char i = snake.currentSnakeLength; i > 0; i--){
-              		snake.snakePostion[i].x = snake.snakePostion[i-1].x;
-              		snake.snakePostion[i].y = snake.snakePostion[i-1].y; 
-			  		max7219b_set(snake.snakePostion[i].x, snake.snakePostion[i].y);
+				for(char segment = snake.currentSnakeLength; segment > 0; segment--){
+              		snake.snakePostion[segment].x = snake.snakePostion[segment-1].x;
+              		snake.snakePostion[segment].y = snake.snakePostion[segment-1].y; 
+			  		max7219b_set(snake.snakePostion[segment].x, snake.snakePostion[segment].y);
        			} 
 			}
 		}
-	
 		snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
 		snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
-		printf("x = %d\n", snake.snakePostion[0].x);
-		printf("y = %d\n", snake.snakePostion[0].y); 
 		max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
-	  	max7219b_out();
+		max7219b_out();
 		clearSnakeTail(snake); 
-		
 		
 		//lastMove = snakeDirection(lastX, lastY, snake.snakePostion[0].x, snake.snakePostion[0].y, lastMove);
 		// if currentMove != lastMove
