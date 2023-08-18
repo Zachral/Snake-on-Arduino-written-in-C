@@ -31,6 +31,7 @@ void hardwareInit(){
 
 	init_serial();
 	max7219_init();
+	
 }
 
 //// https://wokwi.com/projects/296234816685212169
@@ -45,51 +46,37 @@ int main()
 	foodInit(&food); 
 	generateFood(&food, snake); 
 	Movement lastMove; 
-	printf("x = %d\n", snake.snakePostion[0].x);
-	printf("y = %d\n", snake.snakePostion[0].y); 
+	Movement currentMove; 
 	max7219b_out();
+	int horizontal;
+  	int vertical;
 
-
+	
 	while (1) {
-		int lastX = snake.snakePostion[0].x; 
-		int lastY = snake.snakePostion[0].y;
-
-		// if(lastMove == Snake_down) max7219b_clr(lastX, lastY-currentSnakeLenght-1);
-		// else if(lastMove == Snake_Up) max7219b_clr(lastX, lastY+currentSnakeLenght+1);
-		// else if(lastMove == Snake_right) max7219b_clr(lastX-currentSnakeLenght-1, lastY);
-		// else if(lastMove == Snake_left) max7219b_clr(lastX+currentSnakeLenght+1, lastY);
-		
-		int horz = analogRead(HORZ_PIN);
-  		int vert = analogRead(VERT_PIN);
-		snake.snakePostion[0].x = joystickXAxis(horz, snake.snakePostion[0].x); 
-		snake.snakePostion[0].y = joystickYAxis(vert, snake.snakePostion[0].y); 
-
-
-	 	//plots the snake on led-matrix
-		max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y);
-		max7219b_out();
-		_delay_ms(100);
-		lastMove = snakeDirection(lastX, lastY, snake.snakePostion[0].x, snake.snakePostion[0].y, lastMove);
-		// if currentMove != lastMove
-			// initialize currentMove varible
-			// **Write logic for when snake moves direction**
-		// currentMove = lastMove; 	
-		//printf("last move : %d\n", (int)lastMove);
-		if( snake.snakePostion[0].x == food.foodX && snake.snakePostion[0].y == food.foodY){
-			generateFood(&food, snake); 
-			max7219b_out();
-			snake.currentSnakeLength++; 
+		horizontal = analogRead(HORZ_PIN);
+  		vertical = analogRead(VERT_PIN);
+		_delay_ms(75);
+		//Skriv om som funktion? dels en för for-loop och en för att kolla om snake flyttat, return 0?
+		if(snake.currentSnakeLength > 1){
+			if(snakeHasMoved(horizontal, vertical)){
+	 		//plots the snake on led-matrix
+				for(char segment = snake.currentSnakeLength; segment > 0; segment--){
+              		snake.snakePostion[segment].x = snake.snakePostion[segment-1].x;
+              		snake.snakePostion[segment].y = snake.snakePostion[segment-1].y; 
+			  		max7219b_set(snake.snakePostion[segment].x, snake.snakePostion[segment].y);
+       			} 
+			}
 		}
+		snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
+		snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
+		max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
+		max7219b_out();
+		clearSnakeTail(snake); 
 		
-		
-		
-		//Snake moving constantly left. 
-		// for(int i = 0; i < 16;i++){
-		// 	printf("%d\n", i);
-		// 	max7219b_set(i, y);
-		// 	max7219b_out();
-		// 		_delay_ms(1000);
-		// }
+		if(snake.snakePostion[0].x == food.foodX && snake.snakePostion[0].y == food.foodY){
+			snakeGrow(&snake); 
+			generateFood(&food, snake); 
+		}
 	}
 	return 0;
 }
