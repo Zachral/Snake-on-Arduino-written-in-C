@@ -51,7 +51,7 @@ int main()
 	int horizontal;
   	int vertical;
 
-
+	
 	while (1) {
 		horizontal = analogRead(HORZ_PIN);
   		vertical = analogRead(VERT_PIN);
@@ -76,8 +76,6 @@ int main()
 		if(snake.snakePostion[0].x == food.foodX && snake.snakePostion[0].y == food.foodY){
 			snakeGrow(&snake); 
 			generateFood(&food, snake); 
-			printf("Length = %d",snake.currentSnakeLength);
-			
 		}
 	}
 	return 0;
