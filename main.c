@@ -53,14 +53,6 @@ int main()
 
 
 	while (1) {
-		// int lastX = snake.snakePostion[snake.currentSnakeLength-1].x; 
-		// int lastY = snake.snakePostion[snake.currentSnakeLength-1].y;
-
-		// if(lastMove == Snake_down) max7219b_clr(lastX, lastY-currentSnakeLenght-1);
-		// else if(lastMove == Snake_Up) max7219b_clr(lastX, lastY+currentSnakeLenght+1);
-		// else if(lastMove == Snake_right) max7219b_clr(lastX-currentSnakeLenght-1, lastY);
-		// else if(lastMove == Snake_left) max7219b_clr(lastX+currentSnakeLenght+1, lastY);
-		
 		horizontal = analogRead(HORZ_PIN);
   		vertical = analogRead(VERT_PIN);
 		_delay_ms(75);
@@ -81,26 +73,12 @@ int main()
 		max7219b_out();
 		clearSnakeTail(snake); 
 		
-		//lastMove = snakeDirection(lastX, lastY, snake.snakePostion[0].x, snake.snakePostion[0].y, lastMove);
-		// if currentMove != lastMove
-			// initialize currentMove varible
-			// **Write logic for when snake moves direction**
-		// currentMove = lastMove; 	
-		//printf("last move : %d\n", (int)lastMove);
 		if(snake.snakePostion[0].x == food.foodX && snake.snakePostion[0].y == food.foodY){
 			snakeGrow(&snake); 
 			generateFood(&food, snake); 
 			printf("Length = %d",snake.currentSnakeLength);
 			
 		}
-		
-		//Snake moving constantly left. 
-		// for(int i = 0; i < 16;i++){
-		// 	printf("%d\n", i);
-		// 	max7219b_set(i, y);
-		// 	max7219b_out();
-		// 		_delay_ms(1000);
-		// }
 	}
 	return 0;
 }
