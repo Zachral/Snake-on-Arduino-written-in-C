@@ -21,7 +21,7 @@ typedef enum {
     Snake_right
 }Movement; 
 
-void snakeInit(Snake *snake);
+Movement snakeInit(Snake *snake, Movement currentMove);
 //void plotSnakeOnLed(Snake *snake);
 void clearSnakeTail(Snake snake); 
 unsigned int snakeHasMoved(int horizontal, int vertical);

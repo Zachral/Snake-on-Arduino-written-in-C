@@ -41,16 +41,16 @@ int main()
 {
 	hardwareInit(); 
 	Snake snake; 	
-	snakeInit(&snake); 
+	Movement currentMove = snakeInit(&snake, currentMove); 
+	
 	Food food; 
 	foodInit(&food); 
 	generateFood(&food, snake); 
 	Movement lastMove; 
-	Movement currentMove; 
 	max7219b_out();
 	int horizontal;
   	int vertical;
-
+	printf("current move = %d", currentMove); 
 	
 	while (1) {
 		horizontal = analogRead(HORZ_PIN);
