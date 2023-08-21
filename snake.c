@@ -24,7 +24,7 @@ void automaticSnakeMovement(Snake *snake, Movement currentMove){
        if(currentMove == Snake_right) snake->snakePostion[0].x = snake->snakePostion[0].x+1;
 		else if(currentMove == Snake_left) snake->snakePostion[0].x = snake->snakePostion[0].x-1;
 		else if(currentMove == Snake_Up) snake->snakePostion[0].y = snake->snakePostion[0].y-1;
-		else if(currentMove == Snake_down) snake->snakePostion[0].y = snake->snakePostion[0].y-1;
+		else if(currentMove == Snake_down) snake->snakePostion[0].y = snake->snakePostion[0].y+1;
 		max7219b_set(snake->snakePostion[0].x, snake->snakePostion[0].y); 
 		max7219b_out();
        return; 
@@ -44,11 +44,23 @@ void clearSnakeTail(Snake snake){
        return; 
 } 
 
-unsigned int snakeHasMoved(int horizontal, int vertical){
-       if(horizontal > 700) return 1;
-       if(horizontal < 300) return 1; 
-       if(vertical > 700) return 1;
-       if(vertical < 300) return 1; 
+unsigned int snakeHasMoved(int horizontal, int vertical, Movement *currentMove){
+       if(horizontal > 700){
+       *currentMove = Snake_left; 
+       return 1;
+       }
+       if(horizontal < 300) {
+       *currentMove = Snake_right; 
+       return 1;
+       } 
+       if(vertical > 700) {
+       *currentMove = Snake_Up; 
+       return 1;
+       }
+       if(vertical < 300) {
+       *currentMove = Snake_down; 
+       return 1;
+       }; 
        return 0; 
 }
 

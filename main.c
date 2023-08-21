@@ -60,17 +60,17 @@ int main()
 		if(millis_get() - millisecondsSinceLastSnakeMove > 500){
 			automaticSnakeMovement(&snake, currentMove);
 			millisecondsSinceLastSnakeMove = millis_get();
-			printf("Millis X = %d, Millis Y = %d\n", snake.snakePostion[0].x, snake.snakePostion[0].y);
 		}
 		horizontal = analogRead(HORZ_PIN);
   		vertical = analogRead(VERT_PIN);
 		_delay_ms(50); 
-		if(snakeHasMoved(horizontal,vertical)){
+		if(snakeHasMoved(horizontal,vertical, &currentMove)){
 			millisecondsSinceLastSnakeMove = millis_get();
+			printf("Current move = %d", currentMove); 
 		}
 		//Skriv om som funktion? dels en för for-loop och en för att kolla om snake flyttat, return 0?
 		if(snake.currentSnakeLength > 1){
-			if(snakeHasMoved(horizontal, vertical)){
+			if(snakeHasMoved(horizontal, vertical,&currentMove)){
 	 		//plots the snake on led-matrix
 				for(char segment = snake.currentSnakeLength; segment > 0; segment--){
               		snake.snakePostion[segment].x = snake.snakePostion[segment-1].x;
@@ -82,7 +82,6 @@ int main()
 		snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
 		snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
 		max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
-		printf("snake X = %d, snake Y = %d\n", snake.snakePostion[0].x, snake.snakePostion[0].y);
 		max7219b_out();
 		clearSnakeTail(snake); 
 		
