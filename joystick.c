@@ -14,7 +14,6 @@ int joystickXAxis(int horz, int x){
 }
 
 int joystickYAxis(int vert, int y){
-	int maxY = 8;
     if (vert < 300) {
 		y = min(y + 1, Y_AXIS_MAX);
 	}

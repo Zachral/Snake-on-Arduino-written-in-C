@@ -21,9 +21,11 @@ typedef enum {
     Snake_right
 }Movement; 
 
-void snakeInit(Snake *snake);
-//void plotSnakeOnLed(Snake *snake);
+Movement snakeInit(Snake *snake, Movement currentMove);
+void automaticSnakeMovement(Snake *snake, Movement currentMove);
 void clearSnakeTail(Snake snake); 
-unsigned int snakeHasMoved(int horizontal, int vertical);
+void moveSnakeSegments(Snake *snake);
+unsigned int legalSnakeMovement(Movement currentMove, int horizontal, int vertical);
+unsigned int snakeHasMoved(int horizontal, int vertical, Movement *currentMove);
 char randomPlacement(randomMax);
 #endif
