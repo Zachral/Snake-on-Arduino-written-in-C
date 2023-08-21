@@ -81,4 +81,14 @@ unsigned int snakeHasMoved(int horizontal, int vertical, Movement *currentMove){
        return 0; 
 }
 
+unsigned int snakeCollision(Snake snake){
+       for(char segment = 1; segment <= snake.currentSnakeLength; segment++){
+              if ((snake.snakePostion[0].x || snake.snakePostion[0].y) == 
+              (snake.snakePostion[segment].x || snake.snakePostion[segment].y)) return 1;
+              if ((snake.snakePostion[0].x > X_AXIS_MAX-1) || (snake.snakePostion[0].x < 0)) return 1; 
+              if ((snake.snakePostion[0].y > Y_AXIS_MAX-1) || (snake.snakePostion[0].y < 0)) return 1; 
+       }
+       return 0; 
+}
+
 
