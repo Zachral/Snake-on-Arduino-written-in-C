@@ -20,6 +20,16 @@ Movement snakeInit(Snake *snake, Movement currentMove){
      
 };
 
+void automaticSnakeMovement(Snake *snake, Movement currentMove){
+       if(currentMove == Snake_right) snake->snakePostion[0].x = snake->snakePostion[0].x+1;
+		else if(currentMove == Snake_left) snake->snakePostion[0].x = snake->snakePostion[0].x-1;
+		else if(currentMove == Snake_Up) snake->snakePostion[0].y = snake->snakePostion[0].y-1;
+		else if(currentMove == Snake_down) snake->snakePostion[0].y = snake->snakePostion[0].y-1;
+		max7219b_set(snake->snakePostion[0].x, snake->snakePostion[0].y); 
+		max7219b_out();
+       return; 
+}
+
 void snakeGrow(Snake *snake){
        snake->currentSnakeLength++;
        return; 

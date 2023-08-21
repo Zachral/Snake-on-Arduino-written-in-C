@@ -22,7 +22,7 @@ typedef enum {
 }Movement; 
 
 Movement snakeInit(Snake *snake, Movement currentMove);
-//void plotSnakeOnLed(Snake *snake);
+void automaticSnakeMovement(Snake *snake, Movement currentMove);
 void clearSnakeTail(Snake snake); 
 unsigned int snakeHasMoved(int horizontal, int vertical);
 char randomPlacement(randomMax);

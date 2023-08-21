@@ -9,6 +9,8 @@
 #include "uart.h"
 #include "snake.h"
 #include "food.h"
+#include "millis.h"
+#include <avr/interrupt.h>
 
 #define VERT_PIN 0
 #define HORZ_PIN 1
@@ -28,7 +30,9 @@ void hardwareInit(){
 	//Sätt till INPUT_PULLUP
     BIT_CLEAR(DDRD,SEL_PIN); // INPUT MODE
     BIT_SET(PORTD,SEL_PIN); 
-
+	
+	millis_init();
+	sei(); 
 	init_serial();
 	max7219_init();
 	
@@ -42,7 +46,6 @@ int main()
 	hardwareInit(); 
 	Snake snake; 	
 	Movement currentMove = snakeInit(&snake, currentMove); 
-	
 	Food food; 
 	foodInit(&food); 
 	generateFood(&food, snake); 
@@ -50,12 +53,21 @@ int main()
 	max7219b_out();
 	int horizontal;
   	int vertical;
+	volatile millis_t millisecondsSinceLastSnakeMove = 0; 
 	printf("current move = %d", currentMove); 
 	
 	while (1) {
+		if(millis_get() - millisecondsSinceLastSnakeMove > 500){
+			automaticSnakeMovement(&snake, currentMove);
+			millisecondsSinceLastSnakeMove = millis_get();
+			printf("Millis X = %d, Millis Y = %d\n", snake.snakePostion[0].x, snake.snakePostion[0].y);
+		}
 		horizontal = analogRead(HORZ_PIN);
   		vertical = analogRead(VERT_PIN);
-		_delay_ms(75);
+		_delay_ms(50); 
+		if(snakeHasMoved(horizontal,vertical)){
+			millisecondsSinceLastSnakeMove = millis_get();
+		}
 		//Skriv om som funktion? dels en för for-loop och en för att kolla om snake flyttat, return 0?
 		if(snake.currentSnakeLength > 1){
 			if(snakeHasMoved(horizontal, vertical)){
@@ -70,6 +82,7 @@ int main()
 		snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
 		snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
 		max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
+		printf("snake X = %d, snake Y = %d\n", snake.snakePostion[0].x, snake.snakePostion[0].y);
 		max7219b_out();
 		clearSnakeTail(snake); 
 		
