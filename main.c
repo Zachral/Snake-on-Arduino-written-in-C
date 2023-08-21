@@ -62,20 +62,20 @@ int main()
 			automaticSnakeMovement(&snake, currentMove);
 			millisecondsSinceLastSnakeMove = millis_get();
 		}
-
+		 
 		horizontal = analogRead(HORZ_PIN);
   		vertical = analogRead(VERT_PIN);
 		
-		if(snakeHasMoved(horizontal,vertical, &currentMove)){
-			moveSnakeSegments(&snake);
-			millisecondsSinceLastSnakeMove = millis_get();
-			printf("Current move = %d", currentMove); 
-		
+		if(legalSnakeMovement(currentMove, horizontal,vertical)){
+			if(snakeHasMoved(horizontal,vertical, &currentMove)){
+				moveSnakeSegments(&snake);
+				millisecondsSinceLastSnakeMove = millis_get();
+				printf("Current movement = %d\nhorizontal = %d\nvertical = %d", currentMove, horizontal,vertical);
+			}
+			snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
+			snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
+			max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
 		}
-
-		snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
-		snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
-		max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
 		max7219b_out();
 		clearSnakeTail(snake); 
 		
