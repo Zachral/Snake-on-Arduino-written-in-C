@@ -58,42 +58,21 @@ int main()
 	
 	while (1) {
 		if(millis_get() - millisecondsSinceLastSnakeMove > 500){
-			if(snake.currentSnakeLength > 1){
-	 		//plots the snake on led-matrix
-				for(char segment = snake.currentSnakeLength; segment > 0; segment--){
-              		snake.snakePostion[segment].x = snake.snakePostion[segment-1].x;
-              		snake.snakePostion[segment].y = snake.snakePostion[segment-1].y; 
-			  		max7219b_set(snake.snakePostion[segment].x, snake.snakePostion[segment].y);
-       			} 
-			}
+			moveSnakeSegments(&snake); 
 			automaticSnakeMovement(&snake, currentMove);
 			millisecondsSinceLastSnakeMove = millis_get();
 		}
+
 		horizontal = analogRead(HORZ_PIN);
   		vertical = analogRead(VERT_PIN);
 		
 		if(snakeHasMoved(horizontal,vertical, &currentMove)){
+			moveSnakeSegments(&snake);
 			millisecondsSinceLastSnakeMove = millis_get();
 			printf("Current move = %d", currentMove); 
-			if(snake.currentSnakeLength > 1){
-	 		//plots the snake on led-matrix
-				for(char segment = snake.currentSnakeLength; segment > 0; segment--){
-              		snake.snakePostion[segment].x = snake.snakePostion[segment-1].x;
-              		snake.snakePostion[segment].y = snake.snakePostion[segment-1].y; 
-			  		max7219b_set(snake.snakePostion[segment].x, snake.snakePostion[segment].y);
-				}
-			}
+		
 		}
-		//Skriv om som funktion? dels en för for-loop och en för att kolla om snake flyttat, return 0?
-		// if(snake.currentSnakeLength > 1){
-	 	// 	//plots the snake on led-matrix
-		// 		for(char segment = snake.currentSnakeLength; segment > 0; segment--){
-        //       		snake.snakePostion[segment].x = snake.snakePostion[segment-1].x;
-        //       		snake.snakePostion[segment].y = snake.snakePostion[segment-1].y; 
-		// 	  		max7219b_set(snake.snakePostion[segment].x, snake.snakePostion[segment].y);
-       	// 		} 
-			//}
-		//}
+
 		snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
 		snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
 		max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 

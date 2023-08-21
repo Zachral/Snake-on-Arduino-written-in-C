@@ -35,6 +35,17 @@ void snakeGrow(Snake *snake){
        return; 
 }
 
+void moveSnakeSegments(Snake *snake){
+       if(snake->currentSnakeLength > 1){
+		for(char segment = snake->currentSnakeLength; segment > 0; segment--){
+              	snake->snakePostion[segment].x = snake->snakePostion[segment-1].x;
+              	snake->snakePostion[segment].y = snake->snakePostion[segment-1].y; 
+			max7219b_set(snake->snakePostion[segment].x, snake->snakePostion[segment].y);
+		} 
+	}
+       return; 
+}
+
 void clearSnakeTail(Snake snake){
        if(snake.currentSnakeLength > 1){ 
               max7219b_clr(snake.snakePostion[snake.currentSnakeLength].x, snake.snakePostion[snake.currentSnakeLength].y);
