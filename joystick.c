@@ -5,7 +5,7 @@
 
 int joystickXAxis(int horz, int x){
 	if (horz < 700) {
-		x = min(x + 1, X_AXIS_MAX);
+		x = min(x + 1, X_AXIS_MAX +1);
 	}
 	if (horz > 300) {
 		x = max(x - 1, 0);

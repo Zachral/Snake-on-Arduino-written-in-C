@@ -27,5 +27,6 @@ void clearSnakeTail(Snake snake);
 void moveSnakeSegments(Snake *snake);
 unsigned int legalSnakeMovement(Movement currentMove, int horizontal, int vertical);
 unsigned int snakeHasMoved(int horizontal, int vertical, Movement *currentMove);
+unsigned int snakeCollision(Snake snake);
 char randomPlacement(randomMax);
 #endif

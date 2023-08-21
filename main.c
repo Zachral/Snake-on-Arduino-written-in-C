@@ -60,6 +60,11 @@ int main()
 		if(millis_get() - millisecondsSinceLastSnakeMove > 500){
 			moveSnakeSegments(&snake); 
 			automaticSnakeMovement(&snake, currentMove);
+			printf("X = %dY = %d\n", snake.snakePostion[0].x, snake.snakePostion[0].y); 
+			if(snakeCollision(snake)){
+				printf("\nKUKEN! autodöd");
+				break; 
+			}; 
 			millisecondsSinceLastSnakeMove = millis_get();
 		}
 		 
@@ -70,15 +75,18 @@ int main()
 			if(snakeHasMoved(horizontal,vertical, &currentMove)){
 				moveSnakeSegments(&snake);
 				millisecondsSinceLastSnakeMove = millis_get();
-				printf("Current movement = %d\nhorizontal = %d\nvertical = %d", currentMove, horizontal,vertical);
 			}
 			snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
 			snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
 			max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
+			if(snakeCollision(snake)){
+				printf("\nKUKEN! självmord");
+			break; 
+			}; 
 		}
 		max7219b_out();
 		clearSnakeTail(snake); 
-		
+	
 		
 		if(snake.snakePostion[0].x == food.foodX && snake.snakePostion[0].y == food.foodY){
 			snakeGrow(&snake); 
