@@ -39,8 +39,10 @@ void moveSnakeSegments(Snake *snake){
        if(snake->currentSnakeLength > 1){
 		for(char segment = snake->currentSnakeLength; segment > 0; segment--){
               	snake->snakePostion[segment].x = snake->snakePostion[segment-1].x;
-              	snake->snakePostion[segment].y = snake->snakePostion[segment-1].y; 
+              	snake->snakePostion[segment].y = snake->snakePostion[segment-1].y;
+                     printf("Segment %d X = %d\nSegment %d Y = %d\n" , segment, snake->snakePostion[segment].x, segment, snake->snakePostion[segment].y); 
 			max7219b_set(snake->snakePostion[segment].x, snake->snakePostion[segment].y);
+                     
 		} 
 	}
        return; 
@@ -82,11 +84,13 @@ unsigned int snakeHasMoved(int horizontal, int vertical, Movement *currentMove){
 }
 
 unsigned int snakeCollision(Snake snake){
-       for(char segment = 1; segment <= snake.currentSnakeLength; segment++){
-              if ((snake.snakePostion[0].x || snake.snakePostion[0].y) == 
-              (snake.snakePostion[segment].x || snake.snakePostion[segment].y)) return 1;
-              if ((snake.snakePostion[0].x > X_AXIS_MAX-1) || (snake.snakePostion[0].x < 0)) return 1; 
-              if ((snake.snakePostion[0].y > Y_AXIS_MAX-1) || (snake.snakePostion[0].y < 0)) return 1; 
+       if ((snake.snakePostion[0].x > X_AXIS_MAX-1) || (snake.snakePostion[0].x < 0)) return 1; 
+       if ((snake.snakePostion[0].y > Y_AXIS_MAX-1) || (snake.snakePostion[0].y < 0)) return 1; 
+
+       for(char segment = 1; segment < snake.currentSnakeLength; segment++){
+              printf("loop %d", segment); 
+              if ((snake.snakePostion[0].x  == snake.snakePostion[segment].x)
+              && (snake.snakePostion[0].y == snake.snakePostion[segment].y)) return 1;
        }
        return 0; 
 }
