@@ -1,4 +1,5 @@
 #include "max72xx.h"
+#include <stdint.h>
 #include "analogRead.h"
 #include "joystick.h"
 #include <stdio.h>
@@ -11,6 +12,7 @@
 #include "food.h"
 #include "millis.h"
 #include <avr/interrupt.h>
+#include "text.h"
 
 #define VERT_PIN 0
 #define HORZ_PIN 1
@@ -35,7 +37,7 @@ void hardwareInit(){
 	sei(); 
 	init_serial();
 	max7219_init();
-	
+	return; 
 }
 
 //// https://wokwi.com/projects/296234816685212169
@@ -44,6 +46,53 @@ void hardwareInit(){
 int main()
 {
 	hardwareInit(); 
+	uint8_t G[] = {	0B00000000,
+					0B01110000,
+					0B01000000,
+					0B01000000,
+					0B01110000,
+					0B01010000,
+					0B01110000,
+					0B00000000};
+
+	uint8_t A[] = {	0B00000000,
+					0B11100000,
+					0B10100000,
+					0B10100000,
+					0B11100000,
+					0B10100000,
+					0B10100000,
+					0B00000000};
+
+	uint8_t M[] = {	0B00000000,
+					0B10001000,
+					0B11011000,
+					0B10101000,
+					0B10101000,
+					0B10001000,
+					0B10001000,
+					0B00000000};
+
+	uint8_t E[] = {	0B00000000,
+					0B01100000,
+					0B01000000,
+					0B01000000,
+					0B01100000,
+					0B01000000,
+					0B01100000,
+					0B00000000};
+	uint8_t letterSpace = 0;
+	while(!BUTTON_IS_CLICKED(PIND, SEL_PIN)){
+		if(letterSpace < 50){
+			letterSpace = displayLetter(G, letterSpace);
+			letterSpace = displayLetter(A, letterSpace);
+			letterSpace = displayLetter(M, letterSpace-1);
+			letterSpace = displayLetter(E, letterSpace);
+			printf("space = %d\n", letterSpace); 
+		};
+	}
+
+	clearLedMatrix(X_AXIS_MAX,Y_AXIS_MAX); 
 	Snake snake; 	
 	Movement currentMove = snakeInit(&snake, currentMove); 
 	Food food; 
@@ -53,11 +102,11 @@ int main()
 	max7219b_out();
 	int horizontal;
   	int vertical;
-	volatile millis_t millisecondsSinceLastSnakeMove = 0; 
-	printf("current move = %d", currentMove); 
+	volatile millis_t millisecondsSinceLastAction = 0; 
 	
+
 	while (1) {
-		if(millis_get() - millisecondsSinceLastSnakeMove > 500){
+		if(millis_get() - millisecondsSinceLastAction > 500){
 			moveSnakeSegments(&snake); 
 			automaticSnakeMovement(&snake, currentMove);
 			printf("X = %dY = %d\n", snake.snakePostion[0].x, snake.snakePostion[0].y); 
@@ -65,7 +114,7 @@ int main()
 				printf("\nKUKEN! autodöd");
 				break; 
 			}; 
-			millisecondsSinceLastSnakeMove = millis_get();
+			millisecondsSinceLastAction = millis_get();
 		}
 		 
 		horizontal = analogRead(HORZ_PIN);
@@ -74,7 +123,7 @@ int main()
 		if(legalSnakeMovement(currentMove, horizontal,vertical)){
 			if(snakeHasMoved(horizontal,vertical, &currentMove)){
 				moveSnakeSegments(&snake);
-				millisecondsSinceLastSnakeMove = millis_get();
+				millisecondsSinceLastAction = millis_get();
 			}
 			snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
 			snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
