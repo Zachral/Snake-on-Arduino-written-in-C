@@ -83,11 +83,13 @@ int main()
 					0B00000000};
 	uint8_t letterSpace = 0;
 	while(!BUTTON_IS_CLICKED(PIND, SEL_PIN)){
-		letterSpace = displayLetter(G, letterSpace);
-		letterSpace = displayLetter(A, letterSpace);
-		letterSpace = displayLetter(M, letterSpace-1);
-		letterSpace = displayLetter(E, letterSpace);
-		printf("space = %d\n", letterSpace); 
+		if(letterSpace < 50){
+			letterSpace = displayLetter(G, letterSpace);
+			letterSpace = displayLetter(A, letterSpace);
+			letterSpace = displayLetter(M, letterSpace-1);
+			letterSpace = displayLetter(E, letterSpace);
+			printf("space = %d\n", letterSpace); 
+		};
 	}
 
 	clearLedMatrix(X_AXIS_MAX,Y_AXIS_MAX); 
@@ -104,7 +106,6 @@ int main()
 	
 
 	while (1) {
-		millisecondsSinceLastAction = millis_get();
 		if(millis_get() - millisecondsSinceLastAction > 500){
 			moveSnakeSegments(&snake); 
 			automaticSnakeMovement(&snake, currentMove);
