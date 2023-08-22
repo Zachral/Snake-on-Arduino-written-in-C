@@ -3,5 +3,6 @@
 #include <stdint.h>
 
 
-uint8_t displayLetter(uint8_t *letter, uint8_t offset);
+uint8_t displayLetter(uint8_t *letter, uint8_t letterSpace);
+void clearLedMatrix(uint8_t maxX, uint8_t maxY);
 #endif

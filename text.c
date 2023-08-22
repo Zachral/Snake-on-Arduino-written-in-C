@@ -25,3 +25,12 @@ uint8_t displayLetter(uint8_t *letter, uint8_t letterSpace){
     
 }
 
+void clearLedMatrix(uint8_t maxX, uint8_t maxY){
+    for(uint8_t x = 0; x < maxX; x++){
+        for(uint8_t y = 0; y < maxY; y++){
+            max7219b_clr(x,y);
+        }
+    }
+    max7219b_out();
+    return; 
+}

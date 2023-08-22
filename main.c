@@ -37,7 +37,7 @@ void hardwareInit(){
 	sei(); 
 	init_serial();
 	max7219_init();
-	
+	return; 
 }
 
 //// https://wokwi.com/projects/296234816685212169
@@ -83,13 +83,14 @@ int main()
 					0B00000000};
 	uint8_t letterSpace = 0;
 	while(!BUTTON_IS_CLICKED(PIND, SEL_PIN)){
-	letterSpace = displayLetter(G, letterSpace);
-	letterSpace = displayLetter(A, letterSpace);
-	letterSpace = displayLetter(M, letterSpace-1);
-	letterSpace = displayLetter(E, letterSpace);
+		letterSpace = displayLetter(G, letterSpace);
+		letterSpace = displayLetter(A, letterSpace);
+		letterSpace = displayLetter(M, letterSpace-1);
+		letterSpace = displayLetter(E, letterSpace);
+		printf("space = %d\n", letterSpace); 
 	}
 
-
+	clearLedMatrix(X_AXIS_MAX,Y_AXIS_MAX); 
 	Snake snake; 	
 	Movement currentMove = snakeInit(&snake, currentMove); 
 	Food food; 
@@ -101,7 +102,7 @@ int main()
   	int vertical;
 	volatile millis_t millisecondsSinceLastAction = 0; 
 	
-	
+
 	while (1) {
 		millisecondsSinceLastAction = millis_get();
 		if(millis_get() - millisecondsSinceLastAction > 500){
