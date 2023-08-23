@@ -46,50 +46,17 @@ void hardwareInit(){
 int main()
 {
 	hardwareInit(); 
-	uint8_t G[] = {	0B00000000,
-					0B01110000,
-					0B01000000,
-					0B01000000,
-					0B01110000,
-					0B01010000,
-					0B01110000,
-					0B00000000};
-
-	uint8_t A[] = {	0B00000000,
-					0B11100000,
-					0B10100000,
-					0B10100000,
-					0B11100000,
-					0B10100000,
-					0B10100000,
-					0B00000000};
-
-	uint8_t M[] = {	0B00000000,
-					0B10001000,
-					0B11011000,
-					0B10101000,
-					0B10101000,
-					0B10001000,
-					0B10001000,
-					0B00000000};
-
-	uint8_t E[] = {	0B00000000,
-					0B01100000,
-					0B01000000,
-					0B01000000,
-					0B01100000,
-					0B01000000,
-					0B01100000,
-					0B00000000};
-	uint8_t letterSpace = 0;
+	   GAME Game = {.letterG = {0B00000000,0B01110000,0B01000000,0B01000000,0B01110000,0B01010000,0B01110000,0B00000000},
+					.letterA = {0B00000000,0B11100000,0B10100000,0B10100000,0B11100000,0B10100000,0B10100000,0B00000000},
+					.letterM = {0B00000000,0B10001000,0B11011000,0B10101000,0B10101000,0B10001000,0B10001000,0B00000000},
+					.letterE = {0B00000000,0B01100000,0B01000000,0B01000000,0B01100000,0B01000000,0B01100000,0B00000000},
+	};	
+	uint8_t counter = 0;	
 	while(!BUTTON_IS_CLICKED(PIND, SEL_PIN)){
-		if(letterSpace < 50){
-			letterSpace = displayLetter(G, letterSpace);
-			letterSpace = displayLetter(A, letterSpace);
-			letterSpace = displayLetter(M, letterSpace-1);
-			letterSpace = displayLetter(E, letterSpace);
-			printf("space = %d\n", letterSpace); 
-		};
+		if(!(counter > 0)){
+			printLetterToLED(&Game); 
+			counter++; 
+		}
 	}
 
 	clearLedMatrix(X_AXIS_MAX,Y_AXIS_MAX); 
