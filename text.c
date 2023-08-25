@@ -6,54 +6,24 @@
 #define BIT_CHECK(a,b) (!!((a) & (1ULL<<(b)))) 
 
 
- void printLetterToLED(uint8_t array[4][8]){  
-    uint8_t letterWidth = 0;
-    uint8_t startPosition; 
-    for(uint8_t element = 0; element < 4; element++){
-		uint8_t currentCol = 0;    
-        startPosition = letterWidth + 1; 
-        for(uint8_t row = 0; row < 8; row++){
-            if (element > 0){ 
-                currentCol = startPosition + element +1;
-                letterWidth = 8;
-            }else currentCol = 0;// Här börjar denna bokstav
-                for(uint8_t bit = 7; bit >= 0 && bit <=7; bit--){
-					if(element > 1) currentCol--;
-                    else currentCol++;	
-                    if(BIT_CHECK(array[element][row],bit)){
-                        if(bit < letterWidth) letterWidth = bit; 
-                        if(element == 0) max7219b_set(currentCol -2,row); 	
-                        else if (element == 1) max7219b_set(currentCol, row);
-                        else max7219b_set(currentCol +3, row);
-					}
-                       
-				}
+uint8_t printLetterToLED(uint8_t *letter, uint8_t letterSpace){
+    uint8_t counter = letterSpace;
+    for(uint8_t row = 0; row < 8; row++){ 
+        uint8_t tempRow = letter[row];
+        for(uint8_t column = 0; column < 8; column++){
+            if(BIT_CHECK(tempRow, column)){
+                counter = row; 
+                 int8_t tempColumn = 8 - column;
+                 if((column + letterSpace) < 0)
+                     tempColumn = X_AXIS_MAX + tempColumn;
+                max7219b_set((tempColumn + letterSpace-2), row);
+            }
         }
-        max7219b_out();
-		
     }
-    return; 
- } 
-
-
-// uint8_t displayLetter(uint8_t *letter, uint8_t letterSpace){
-//     uint8_t counter = letterSpace;
-//     for(uint8_t row = 0; row < 8; row++){ 
-//         uint8_t tempRow = letter[row];
-//         for(uint8_t column = 0; column < 8; column++){
-//             if(BIT_CHECK(tempRow, column)){
-//                 counter = row; 
-//                  int8_t tempColumn = 8 - column;
-//                  if((column + letterSpace) < 0)
-//                      tempColumn = X_AXIS_MAX + tempColumn;
-//                 max7219b_set((tempColumn + letterSpace-2), row);
-//             }
-//         }
-//     }
-//     max7219b_out();
-//     return letterSpace + counter-1;  
+    max7219b_out();
+    return letterSpace + counter-1;  
     
-// }
+}
 
 void clearLedMatrix(uint8_t maxX, uint8_t maxY){
     for(uint8_t x = 0; x < maxX; x++){

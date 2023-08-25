@@ -46,30 +46,49 @@ void hardwareInit(){
 int main()
 {
 	hardwareInit(); 
-	   GAME Game = {.letterG = {0B00000000,0B01110000,0B01000000,0B01000000,0B01110000,0B01010000,0B01110000,0B00000000},
-					.letterA = {0B00000000,0B11100000,0B10100000,0B10100000,0B11100000,0B10100000,0B10100000,0B00000000},
-					.letterM = {0B00000000,
-								0B00100010,
-								0B00110110,
-								0B00101010,
-								0B00101010,
-								0B00100010,
-								0B00100010,
-								0B00000000},
-					.letterE = {0B00000000,
-								0B11100000,
-								0B00100000,
-								0B00100000,
-								0B11100000,
-								0B00100000,
-								0B11100000,
-								0B00000000},
-	};	
-	uint8_t counter = 0;	
+	GAME Game = {
+		.letterG = {0B00000000,0B01110000,0B01000000,0B01000000,0B01110000,0B01010000,0B01110000,0B00000000},
+		.letterA = {0B00000000,0B11100000,0B10100000,0B10100000,0B11100000,0B10100000,0B10100000,0B00000000},
+		.letterM = {0B00000000,
+					0B10001000,
+					0B11011000,
+					0B10101000,
+					0B10101000,
+					0B10001000,
+					0B10001000,0B00000000},
+		.letterE = {0B00000000,
+		0B01100000,
+		0B01000000,
+		0B01000000,
+		0B01100000,
+		0B01000000,
+		0B01100000,
+		0B00000000},
+	};
+	WIN Win ={
+		.letterW = {0B00000000,0B10001000,0B10001000,0B10101000,0B10101000,0B11011000,0B10001000,0B00000000},
+		.letterI = {0B00000000,0B00111000,0B00010000,0B00010000,0B00010000,0B00010000,0B00111000,0B00000000},
+		.letterN = {0B00000000,0B01000100,0B01100100,0B01010100,0B01001100,0B01000100,0B01000100,0B00000000},
+	};
+	END End ={
+		.letterE = {0B00000000,0B01111000,0B01000000,0B01110000,0B01000000,0B01000000,0B01111000,0B00000000},
+		.letterD = {0B00000000,0B00111000,0B00100100,0B00100010,0B00100010,0B00100100,0B00111000,0B00000000},
+	};
+
+
+	uint8_t letterSpace = 0;	
 	while(!BUTTON_IS_CLICKED(PIND, SEL_PIN)){
-		if(!(counter > 0)){
-			printLetterToLED(&Game); 
-			counter++; 
+		if(letterSpace < 10){
+			letterSpace = printLetterToLED(Game.letterG, letterSpace);
+			letterSpace = printLetterToLED(Game.letterA, letterSpace);
+			letterSpace = printLetterToLED(Game.letterM, letterSpace-1);
+			letterSpace = printLetterToLED(Game.letterE, letterSpace);
+		// 	letterSpace = printLetterToLED(Win.letterW, letterSpace +1);
+		// 	letterSpace = printLetterToLED(Win.letterI, letterSpace);
+		// 	letterSpace = printLetterToLED(Win.letterN, letterSpace);
+		// 	letterSpace = printLetterToLED(End.letterE, letterSpace);
+		// 	letterSpace = printLetterToLED(Win.letterN, letterSpace);
+		// 	letterSpace = printLetterToLED(End.letterD, letterSpace);
 		}
 	}
 
