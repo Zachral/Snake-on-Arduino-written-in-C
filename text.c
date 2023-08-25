@@ -6,23 +6,31 @@
 #define BIT_CHECK(a,b) (!!((a) & (1ULL<<(b)))) 
 
 
- void printLetterToLED(uint8_t array[4][8]){
-    for(uint8_t element = 0; element < sizeof array[0]; element++){
-        printf("Element %d\n", element);
-		uint8_t currentCol = 0; 
+ void printLetterToLED(uint8_t array[4][8]){  
+    uint8_t letterWidth = 0;
+    uint8_t startPosition; 
+    for(uint8_t element = 0; element < 4; element++){
+		uint8_t currentCol = 0;    
+        startPosition = letterWidth + 1; 
         for(uint8_t row = 0; row < 8; row++){
-			currentCol = element * 8; // Här börjar denna bokstav
+            if (element > 0){ 
+                currentCol = startPosition + element +1;
+                letterWidth = 8;
+            }else currentCol = 0;// Här börjar denna bokstav
                 for(uint8_t bit = 7; bit >= 0 && bit <=7; bit--){
-					currentCol++;	
+					if(element > 1) currentCol--;
+                    else currentCol++;	
                     if(BIT_CHECK(array[element][row],bit)){
-						if (element == 0) max7219b_set(currentCol-2,row);
-						else if(element == 1) max7219b_set(currentCol-5,row);
-						else if(element == 2) max7219b_set(currentCol -9,row); 
-						else max7219b_set(currentCol -12,row);	
+                        if(bit < letterWidth) letterWidth = bit; 
+                        if(element == 0) max7219b_set(currentCol -2,row); 	
+                        else if (element == 1) max7219b_set(currentCol, row);
+                        else max7219b_set(currentCol +3, row);
 					}
+                       
 				}
         }
-		max7219b_out();
+        max7219b_out();
+		
     }
     return; 
  } 
