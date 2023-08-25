@@ -86,9 +86,6 @@ int main()
 		// 	letterSpace = printLetterToLED(Win.letterW, letterSpace +1);
 		// 	letterSpace = printLetterToLED(Win.letterI, letterSpace);
 		// 	letterSpace = printLetterToLED(Win.letterN, letterSpace);
-		// 	letterSpace = printLetterToLED(End.letterE, letterSpace);
-		// 	letterSpace = printLetterToLED(Win.letterN, letterSpace);
-		// 	letterSpace = printLetterToLED(End.letterD, letterSpace);
 		}
 	}
 
@@ -99,18 +96,23 @@ int main()
 	foodInit(&food); 
 	generateFood(&food, snake); 
 	Movement lastMove; 
-	max7219b_out();
+	//max7219b_out();
 	int horizontal;
   	int vertical;
 	volatile millis_t millisecondsSinceLastAction = 0; 
+	letterSpace = 0;
 	
-
+	printf("Start X = %dY = %d\n", snake.snakePostion[0].x, snake.snakePostion[0].y);
 	while (1) {
 		if(millis_get() - millisecondsSinceLastAction > 500){
 			moveSnakeSegments(&snake); 
 			automaticSnakeMovement(&snake, currentMove);
 			printf("X = %dY = %d\n", snake.snakePostion[0].x, snake.snakePostion[0].y); 
 			if(snakeCollision(snake)){
+				clearLedMatrix(X_AXIS_MAX,Y_AXIS_MAX); 
+				letterSpace = printLetterToLED(End.letterE, letterSpace);
+				letterSpace = printLetterToLED(Win.letterN, letterSpace);
+				letterSpace = printLetterToLED(End.letterD, letterSpace);
 				printf("\nKUKEN! autodöd");
 				break; 
 			}; 
@@ -129,9 +131,11 @@ int main()
 			snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
 			max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
 			if(snakeCollision(snake)){
-				printf("\nKUKEN! självmord");
-			break; 
-			}; 
+				letterSpace = printLetterToLED(End.letterE, letterSpace);
+				letterSpace = printLetterToLED(Win.letterN, letterSpace);
+				letterSpace = printLetterToLED(End.letterD, letterSpace);
+				break;
+			}
 		}
 		max7219b_out();
 		clearSnakeTail(snake); 
