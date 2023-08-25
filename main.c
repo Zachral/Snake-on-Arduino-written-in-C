@@ -40,6 +40,8 @@ void hardwareInit(){
 	return; 
 }
 
+
+
 //// https://wokwi.com/projects/296234816685212169
 
 
@@ -83,9 +85,6 @@ int main()
 			letterSpace = printLetterToLED(Game.letterA, letterSpace);
 			letterSpace = printLetterToLED(Game.letterM, letterSpace-1);
 			letterSpace = printLetterToLED(Game.letterE, letterSpace);
-		// 	letterSpace = printLetterToLED(Win.letterW, letterSpace +1);
-		// 	letterSpace = printLetterToLED(Win.letterI, letterSpace);
-		// 	letterSpace = printLetterToLED(Win.letterN, letterSpace);
 		}
 	}
 
@@ -102,7 +101,6 @@ int main()
 	volatile millis_t millisecondsSinceLastAction = 0; 
 	letterSpace = 0;
 	
-	printf("Start X = %dY = %d\n", snake.snakePostion[0].x, snake.snakePostion[0].y);
 	while (1) {
 		if(millis_get() - millisecondsSinceLastAction > 500){
 			moveSnakeSegments(&snake); 
@@ -124,13 +122,15 @@ int main()
 		
 		if(legalSnakeMovement(currentMove, horizontal,vertical)){
 			if(snakeHasMoved(horizontal,vertical, &currentMove)){
-				moveSnakeSegments(&snake);
 				millisecondsSinceLastAction = millis_get();
+				moveSnakeSegments(&snake);
+				
 			}
 			snake.snakePostion[0].x = joystickXAxis(horizontal, snake.snakePostion[0].x); 
 			snake.snakePostion[0].y = joystickYAxis(vertical, snake.snakePostion[0].y); 
 			max7219b_set(snake.snakePostion[0].x, snake.snakePostion[0].y); 
 			if(snakeCollision(snake)){
+				clearLedMatrix(X_AXIS_MAX,Y_AXIS_MAX); 
 				letterSpace = printLetterToLED(End.letterE, letterSpace);
 				letterSpace = printLetterToLED(Win.letterN, letterSpace);
 				letterSpace = printLetterToLED(End.letterD, letterSpace);
@@ -142,10 +142,16 @@ int main()
 	
 		
 		if(snake.snakePostion[0].x == food.foodX && snake.snakePostion[0].y == food.foodY){
-			snakeGrow(&snake); 
-			generateFood(&food, snake); 
+			snake.currentSnakeLength++;
+			if(!generateFood(&food, snake)){
+				clearLedMatrix(X_AXIS_MAX, Y_AXIS_MAX);
+            	letterSpace = printLetterToLED(Win.letterW, letterSpace +1);
+            	letterSpace = printLetterToLED(Win.letterI, letterSpace);
+            	letterSpace = printLetterToLED(Win.letterN, letterSpace);
+            	break; 
+			}
 		}
-		_delay_ms(50); 
+		_delay_ms(10); 
 	}
 	return 0;
 }
