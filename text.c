@@ -13,10 +13,10 @@ uint8_t printLetterToLED(uint8_t *letter, uint8_t letterSpace){
         for(uint8_t column = 0; column < 8; column++){
             if(BIT_CHECK(tempRow, column)){
                 counter = row; 
-                 int8_t tempColumn = 8 - column;
-                 if((column + letterSpace) < 0)
-                     tempColumn = X_AXIS_MAX + tempColumn;
-                max7219b_set((tempColumn + letterSpace-2), row);
+                int8_t tempColumn = 8 - column;
+                if((column + letterSpace) < 0)
+                     tempColumn= X_AXIS_MAX + tempColumn;
+                max7219b_set((tempColumn + letterSpace-2),7 - row);
             }
         }
     }

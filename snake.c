@@ -49,17 +49,17 @@ void clearSnakeTail(Snake snake){
 } 
 
 unsigned int legalSnakeMovement(Movement currentMove, int horizontal, int vertical){
-       if ((currentMove == Snake_left || currentMove == Snake_right) && (horizontal >700 || horizontal < 300)) return 0; 
+       if ((currentMove == Snake_left || currentMove == Snake_right) && (horizontal < 300  || horizontal  > 700)) return 0; 
        if ((currentMove == Snake_Up || currentMove == Snake_down) && (vertical > 700 || vertical < 300)) return 0;
        return 1; 
 }
 
 unsigned int snakeHasMoved(int horizontal, int vertical, Movement *currentMove){
-       if(horizontal > 700){
+       if(horizontal < 300 ){
        *currentMove = Snake_left; 
        return 1;
        }
-       if(horizontal < 300) {
+       if(horizontal > 700) {
        *currentMove = Snake_right; 
        return 1;
        } 

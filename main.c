@@ -88,7 +88,7 @@ int main()
 	
 	while (1) {
 		//Moves snake one LED in the current snakeMoveDirection if no move has been made for 175 milliseconds. 
-		if(millis_get() - millisecondsSinceLastAction > 175){
+		if(millis_get() - millisecondsSinceLastAction > 300){
 			moveSnakeSegments(&snake); 
 			automaticSnakeMovement(&snake, snakeMoveDirection);
 			if(snakeCollision(snake)){
