@@ -16,10 +16,13 @@ The setup used is, excluding the arduino:
 jumpercables.
 
 I used this guide to connect the matrices: https://www.instructables.com/Multiple-LED-Matrixes-with-Arduino/
+
 The joystick is connected the same was as in Wokwi, as is all the ports to the matrices. 
 
 The code for the led-matrix and joystick comes from aspcodenet on GitHuB and modified by me:
+
 https://github.com/aspcodenet/avrmax72
+
 https://github.com/aspcodenet/avrjoystick
 
 If you want to increase or decrease the speed of the snake, you can change the number of miliiseconds on this delay in main, row 91
