@@ -8,9 +8,12 @@ The horizontal inputs needed to be inverted to properly represent right and left
 
 
 The setup used is, excluding the arduino:
+
 1 Joystick
+
 2 8x8 led-matrices
-and jumpercables.
+
+jumpercables.
 
 I used this guide to connect the matrices: https://www.instructables.com/Multiple-LED-Matrixes-with-Arduino/
 The joystick is connected the same was as in Wokwi, as is all the ports to the matrices. 
