@@ -1,10 +1,11 @@
 # Snake-on-Arduino-written-in-C
 
 Snake- project on arduino.
-The master branch is code that runs on this Wokwi-link: https://wokwi.com/projects/296234816685212169\n
+The master branch is code that runs on this Wokwi-link: https://wokwi.com/projects/296234816685212169
 
 If you want to run it on an Arduino (I use a UNO R3) use the Arduino-master branch instead. 
-The horizontal inputs needed to be inverted to properly represent right and left.\n
+The horizontal inputs needed to be inverted to properly represent right and left.
+
 
 The setup used is, excluding the arduino:
 1 Joystick
