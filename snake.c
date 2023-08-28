@@ -9,13 +9,11 @@ char randomPlacement(randomMax){
     return (rand() % randomMax);
 }
 
-
 Movement snakeInit(Snake *snake, Movement currentMove){
        srand(analogRead(RANDOMIZER_PIN)); 
 	snake->snakePostion[0].x = randomPlacement(X_AXIS_MAX);
 	snake->snakePostion[0].y = randomPlacement(Y_AXIS_MAX);
 	snake->currentSnakeLength = 1; 
-      //max7219b_set(snake->snakePostion[0].x, snake->snakePostion[0].y);
        return currentMove = (snake->snakePostion[0].x >= 8) ? Snake_left : Snake_right;
      
 };
@@ -36,7 +34,6 @@ void moveSnakeSegments(Snake *snake){
               	snake->snakePostion[segment].x = snake->snakePostion[segment-1].x;
               	snake->snakePostion[segment].y = snake->snakePostion[segment-1].y;
 			max7219b_set(snake->snakePostion[segment].x, snake->snakePostion[segment].y);
-                     
 		} 
 	}
        return; 

@@ -22,7 +22,6 @@ uint8_t printLetterToLED(uint8_t *letter, uint8_t letterSpace){
     }
     max7219b_out();
     return letterSpace + counter-1;  
-    
 }
 
 void clearLedMatrix(uint8_t maxX, uint8_t maxY){

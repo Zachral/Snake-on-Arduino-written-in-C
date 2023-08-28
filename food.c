@@ -1,6 +1,5 @@
 #include "food.h"
 #include "snake.h"
-#include "text.h"
 #include "joystick.h"
 
 void foodInit(Food *food){
@@ -10,7 +9,7 @@ void foodInit(Food *food){
 }
 
 unsigned int checkFoodPlacement(Food food, Snake snake){
-        for(unsigned int snakeSegment = 0; snakeSegment > snake.currentSnakeLength; snakeSegment++){
+        for(unsigned int snakeSegment = 0; snakeSegment < snake.currentSnakeLength; snakeSegment++){
             if(snake.snakePostion[snakeSegment].x == food.foodX) return 1; 
             if (snake.snakePostion[snakeSegment].x+1 == food.foodX) return 1;
             if (snake.snakePostion[snakeSegment].x-1 == food.foodX) return 1;
@@ -21,13 +20,11 @@ unsigned int checkFoodPlacement(Food food, Snake snake){
         return 0; 
 }
    
-
-
 uint8_t generateFood(Food *food, Snake snake){
-    uint8_t counter = 1;
+    uint8_t counter = 0;
     foodInit(food); 
     while(checkFoodPlacement(*food, snake)){
-        if(counter < 1){
+        if(counter < 128){
             foodInit(food); 
             counter++;
         }else{
