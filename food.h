@@ -1,6 +1,8 @@
 #ifndef _FOOD_H_
 #define _FOOD_H_
+#include <stdint.h>
 #include "snake.h"
+#include "text.h"
 
 typedef struct{
     char foodX;
@@ -8,5 +10,5 @@ typedef struct{
 }Food; 
 
 void foodInit(Food *food); 
-void generateFood(Food *food, Snake snake); 
+uint8_t generateFood(Food *food, Snake snake); 
 #endif
